@@ -56,6 +56,28 @@ class HtmlWeb {
 		return null;
 	}
 
+    function load_post($url,$header,$post) {
+        if(!filter_var($url, FILTER_VALIDATE_URL)) {
+            return null;
+        }
+        if($scheme = parse_url($url, PHP_URL_SCHEME)) {
+            switch(strtolower($scheme)) {
+                case 'http':
+                case 'https': break;
+                default: return null;
+            }
+
+            if(extension_loaded('curl')) {
+                return $this->load_curl($url,$header,"POST",$post);
+            } else {
+                error_log(__FUNCTION__ . ' requires the cURL extension in php.ini');
+            }
+        }
+
+        return null;
+
+    }
+
 	/**
 	 * cURL implementation of load
 	 */
