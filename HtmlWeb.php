@@ -59,24 +59,35 @@ class HtmlWeb {
 	/**
 	 * cURL implementation of load
 	 */
-	private function load_curl($url)
+	private function load_curl($url,$curl_headers=[],$method="GET",$fields=[])
 	{
-		$ch = curl_init();
+        // There is no guarantee this request will be fulfilled
+        $header = array(
+            'Accept: text/html', // Prefer HTML format
+            'Accept-Charset: utf-8', // Prefer UTF-8 encoding
+        );
+        $header = array_merge($header,$curl_headers);
+
+        $ch = curl_init();
 
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_ENCODING, '');
+        if($method==="POST") {
+            $header[] = "Content-Type: multipart/form-data";
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        }
+        define("COOKIE_FILE", "cookie.txt");
+        curl_setopt ($ch, CURLOPT_COOKIEJAR, COOKIE_FILE);
+        curl_setopt ($ch, CURLOPT_COOKIEFILE, COOKIE_FILE);
 
 		// There is no guarantee this request will be fulfilled
 		// -- https://www.php.net/manual/en/function.curl-setopt.php
 		curl_setopt($ch, CURLOPT_BUFFERSIZE, MAX_FILE_SIZE);
 
-		// There is no guarantee this request will be fulfilled
-		$header = array(
-			'Accept: text/html', // Prefer HTML format
-			'Accept-Charset: utf-8', // Prefer UTF-8 encoding
-		);
+
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 
 		$doc = curl_exec($ch);
