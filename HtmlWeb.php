@@ -87,6 +87,13 @@ class HtmlWeb {
         $header = array(
             'Accept: text/html', // Prefer HTML format
             'Accept-Charset: utf-8', // Prefer UTF-8 encoding
+	    'Accept-Encoding: gzip, deflate',
+	    'Accept-Language: en-US,en;q=0.5',
+	    'Cache-Control: no-cache',
+	    'Content-Type: text/html; charset=UTF-8',
+	    'Referer: http://www.google.com/', //Your referrer address
+	    'User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.',
+	    'X-MicrosoftAjax: Delta=true'
         );
         $header = array_merge($header,$curl_headers);
 
