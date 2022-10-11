@@ -96,6 +96,7 @@ class HtmlWeb {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_ENCODING, '');
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0' );
         if($method==="POST") {
             $header[] = "Content-Type: multipart/form-data";
             curl_setopt($ch, CURLOPT_POST, 1);
